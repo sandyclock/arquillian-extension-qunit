@@ -42,6 +42,8 @@ import org.jboss.shrinkwrap.api.ArchivePath;
 import org.jboss.shrinkwrap.api.Filters;
 import org.jboss.shrinkwrap.api.Node;
 import org.jboss.shrinkwrap.api.exporter.ExplodedExporter;
+import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.phantomjs.PhantomJSDriver;
 import org.openqa.selenium.phantomjs.PhantomJSDriverService;
 import org.openqa.selenium.remote.DesiredCapabilities;
@@ -95,10 +97,14 @@ public final class SuiteReader {
         final TestMethod[] qunitTestMethods = suite.getTestMethods();
         if (!ArrayUtils.isEmpty(qunitTestMethods)) {
 
-            PhantomJSDriverService driverService = (PhantomJSDriverService) ResolvingPhantomJSDriverService
-                .createDefaultService();
-            PhantomJSDriver driver = new PhantomJSDriver(driverService, DesiredCapabilities.phantomjs());
+//            PhantomJSDriverService driverService = (PhantomJSDriverService) ResolvingPhantomJSDriverService
+//                .createDefaultService();
+//            PhantomJSDriver driver = new PhantomJSDriver(driverService, DesiredCapabilities.phantomjs());
 
+        	ChromeOptions options = new ChromeOptions();
+        	options.addArguments("--headless");
+        	ChromeDriver driver = new ChromeDriver(options);
+        	
             for (TestMethod method : qunitTestMethods) {
                 if (!StringUtils.isEmpty(method.getQUnitTestSuiteFilePath())) {
 
@@ -133,6 +139,7 @@ public final class SuiteReader {
                     }
                 }
             }
+            driver.close();
         }
 
         try {
